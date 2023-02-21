@@ -1,1 +1,66 @@
 
+---
+title: How to transfer the project to github
+date: 2023-02-20 20:35:10
+tags:
+---
+# 如何将写好的项目上传到github #
+## 1.安装git(百度)
+## 2.创建本地仓库（存放本地项目的文件夹）
+自行创建一个文件夹，用作本地仓库。（这里举例创建的是mycangku文件夹）
+## 3.将要上传的文件（举例为myapp)复制粘贴在mycangku文件夹同级目录下
+## 4.生成 .git 文件
+回到mycangku文件夹中鼠标右键，选择git bash here
+执行git init命令
+```
+git init:通过命令git init把这个文件夹变成Git可以管理的仓库。执行完git init命令后mycangku文件夹中会多了一个.git文件夹。.git文件夹是Git用来跟踪和管理版本的库的。注意：如果看不到.git文件夹，可能是被隐藏了
+```
+执行命令（注意GithubName是你github的用户名，GithubEmail是注册github的邮箱）
+```
+git config --global user.name "GithubName"
+git config --global user.email "GithubEmail"
+```
+### 5.将要上传的myapp项目放在本地仓库mycangku中
+执行命令(git status可以查看.git文件夹下的其他文件)
+```
+git status
+```
+添加项目到本地仓库中(needUploadProjectName为要上传到本地仓库的文件名)
+```
+git add needUploadProjectName/
+```
+再次git status 能看到添加在mycangku的文件
+### 5.生成密钥
+执行命令（然后连续按下三个回车键才会生成公钥）
+```
+ssh-keygen -t rsa -C "GithubEmail"
+```
+执行命令按下第一个回车键会在User中（mac是在Home中）生成.ssh文件夹
+再按下第二个、第三个回车键会在.ssh文件夹中生成id_rsa和id_rsa.pub文件
+
+打开.ssh文件夹下的id_rsa.pub(可以用记事本打开)，复制该公钥
+### 6.登录github进行SSH公钥授权
+进入github,点击个人头像，选择Setting中的SSH and GPG keys
+
+在SSH and GPG keys中
+填写title(任意命名)
+把刚才从id_rsa.pub复制的公钥粘贴在key中
+点击Add SSH key完成SSH公钥授权
+### 7.创建github仓库（这里展示的repository不需要readme描述文件）
+new progig创建repository,填好仓库name点击Create repository.(这里举例仓库命名为VueShop)
+这个时候，本地仓库mycangku就和github仓库VueShop实现关联了
+### 8.将本地仓库(mycangku)和github仓库(VueShop)关联起来执行,向github仓库VueShop推送本地仓库中的所有内容
+执行
+```
+echo "# VueShop" >> README.md
+git init 
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/GithubName/VueShop.git--将本地仓库(mycangku)和github仓库(VueShop)关联起来
+git push -u origin main--向github仓库VueShop推送本地仓库中的所有内容
+```
+执行git push -u origin main后会弹出一个gihhub登录的框，我们用成token登录（如果用密码登录却报密码凭证不能用的话）。详细请看这位博主的文章，写的很详细了： https://blog.csdn.net/qq_41646249/article/details/119777084
+
+进度完成百分百，再次刷新github就有我们上传的文件啦
+
